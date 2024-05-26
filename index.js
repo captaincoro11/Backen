@@ -4,17 +4,26 @@ const dotenv = require('dotenv');
 const { connectDatabase } = require('./db');
 const taskRoutes = require('./routes/task');
 const cors = require('cors');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
 
 
 dotenv.config({});
 
-connectDatabase();
+
 app.use(cors());
 app.use(express.json({limit:"50mb"}))
 app.use(express.static('public'))
 app.use('/task',taskRoutes)
 
+const url = 'mongodb+srv://PranjulShukla:beena55@cluster0.qicx6ls.mongodb.net/';
+
+const connectDatabase = ()=>{
+    mongoose.connect(url).then((con)=>console.log(`DataBase Connected ${con.connection.host}`)).catch((error)=>console.log(error))
+}
+
+connectDatabase();
 
 const port = process.env.port || 5000;
 
